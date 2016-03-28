@@ -12,23 +12,24 @@ var chat = require('./chat-commands.js');
 var client = new tmi.client(options);
 client.connect();
 
+
 // Handle the chat event
 client.on("chat", function(channel, user, message, self){
 	var clientInfo = [ client, message ];
-	var list = [
-		"!newVideo",
-		"!commands",
-		"!appSeries",
-		"!youtube",
-		"!twitter",
-		"!github"
+	var commandList = [
+		{ command: "!newVideo", response:  "https://youtu.be/1q8DRltaHkQ" },
+		{ command: "!appSeries", response:  "https://www.youtube.com/playlist?list=PL9U4VLnCxZoOo2V6PXJ4cB2T61EZb0bYj" },
+		{ command: "!youtube", response:  "https://www.youtube.com/c/DevCoffee" },
+		{ command: "!twitter", response:  "https://twitter.com/dev_coffee" },
+		{ command: "!github", response:  "https://github.com/DmsChrisPena/DevCoffeeBot" }
 	];
-	chat.command("!newVideo", "https://youtu.be/1q8DRltaHkQ", clientInfo);
-	chat.command("!commands", chat.commandList(list), clientInfo);
-	chat.command("!appSeries", "https://www.youtube.com/playlist?list=PL9U4VLnCxZoOo2V6PXJ4cB2T61EZb0bYj", clientInfo);
-	chat.command("!youtube", "https://www.youtube.com/c/DevCoffee", clientInfo);
-	chat.command("!twitter", "https://twitter.com/dev_coffee", clientInfo);
-	chat.command("!github", "https://www.youtube.com/c/DevCoffee", clientInfo);
+	
+	chat.command("!commands", chat.commandList(commandList), clientInfo);
+	
+	for (var i = 0; i < commandList.length; i++) {
+		var item = commandList[i];
+		chat.command(item.command, item.response, clientInfo);
+	};
 });
 
 client.on("connected", function() {
