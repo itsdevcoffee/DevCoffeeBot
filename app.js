@@ -1,57 +1,36 @@
 // Get our tmi module
 var tmi = require('tmi.js');
 
-// Readline tool to prompt user for channel name
-var readline = require('readline');
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+// Get our options for the Irc connection
+var options = require('./options.js');
 
-// Get API Key from module
-// Goto api.twitch.tv to get yours
-var apiKey = require('./key.js');
-
-// Define the connection options
-var options = {
-	options: {
-		debug: true
-	},
-	connection: {
-		cluster: "aws",
-		reconnect: true
-	},
-	identity: {
-		username: "DevCoffeeBot",
-		password: apiKey
-	},
-	channels: ["devcoffee_"]
-}
-
+// Get our chat-command module
+// This is where you define all your !commands
+var chat = require('./chat-commands.js');
 
 //Connect to client;
 var client = new tmi.client(options);
 client.connect();
+
+// Handle the chat event
 client.on("chat", function(channel, user, message, self){
-	client.color("Red").then(function(data) {
-		client.action("devcoffee_", "Suh dude");
-	}).catch(function(err) {
-	   
-	});
-	client.color("GoldenRod").then(function(data) {
-		client.action("devcoffee_", "Suh dude");
-	}).catch(function(err) {
-	   
-	});
-	client.color("HotPink").then(function(data) {
-		client.action("devcoffee_", "Suh dude");
-	}).catch(function(err) {
-	   
-	});
+	var clientInfo = [ client, message ];
+	var list = [
+		"!newVideo",
+		"!commands",
+		"!appSeries",
+		"!youtube",
+		"!twitter",
+		"!github"
+	];
+	chat.command("!newVideo", "https://youtu.be/1q8DRltaHkQ", clientInfo);
+	chat.command("!commands", chat.commandList(list), clientInfo);
+	chat.command("!appSeries", "https://www.youtube.com/playlist?list=PL9U4VLnCxZoOo2V6PXJ4cB2T61EZb0bYj", clientInfo);
+	chat.command("!youtube", "https://www.youtube.com/c/DevCoffee", clientInfo);
+	chat.command("!twitter", "https://twitter.com/dev_coffee", clientInfo);
+	chat.command("!github", "https://www.youtube.com/c/DevCoffee", clientInfo);
 });
 
-// Uncomment later
-// var channelName = rl.question("What channel do you want me in?", function(answer) {
-// 	rl.close();
-// 	options.channels.push("#" + answer);
-// });
+client.on("connected", function() {
+	client.action("devcoffee_", "Hello everyone. I'm DevCoffeeBot. What size latte do you want?");
+});
