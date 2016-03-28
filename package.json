@@ -1,0 +1,21 @@
+{
+  "name": "devcoffeebot",
+  "version": "1.0.0",
+  "description": "This is a bot for dev coffee",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "devcoffeebot"
+  },
+  "keywords": [
+    "dev",
+    "coffee",
+    "twitch",
+    "bot"
+  ],
+  "author": "Chris Pena",
+  "license": "ISC"
+}
