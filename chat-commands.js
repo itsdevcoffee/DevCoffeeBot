@@ -1,7 +1,6 @@
 // Define all your commands for the bot here.
 module.exports = {
 	command: function(command, response, options) {
-		console.log(typeof options === 'object');
 		if(typeof options === 'object') {
 			if(command === options[1] || command.toLowerCase() === options[1]) {
 				options[0].action("devcoffee_", response);
